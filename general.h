@@ -57,15 +57,9 @@ typedef struct type_instruction{
   struct type_instruction *next;
 }type_instruction;
 
-typedef struct{
-    type_instruction *start;
-}list_instructions;
-
 char *decimal_to_binary(int decimal, int lenght);
 
-int count_instructions(list_instructions *instructions_list);
-
-void print_target_code(list_instructions *instructions_list);
+// void print_target_code(list_instructions *instructions_list);
 
 
 #endif

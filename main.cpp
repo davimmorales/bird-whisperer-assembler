@@ -3,29 +3,27 @@
 
 using namespace std;
 
-//insertion function for variables
-// void insert_variable(list_variables *variables_list, int index, int index_array, kind_variable kind, char id[], char scope[]){
-// 	type_variable *p = variables_list->start;
-// 	type_variable *new_variable = malloc(sizeof(type_variable));
-//
-// 	new_variable->index = index;
-// 	new_variable->index_array = index_array;
-// 	new_variable->kind = kind;
-// 	strcpy(new_variable->scope, scope);
-// 	strcpy(new_variable->id, id);
-//
-// 	if(p==NULL){
-// 		variables_list->start = new_variable;
-// 		variables_list->start->next = NULL;
-// 	}
-// 	else{
-// 		while(p->next!=NULL){
-// 			p = p->next;
-// 		}
-// 		p->next = new_variable;
-// 		p->next->next = NULL;
-// 	}
-// }
+// global variables
+int line;
+
+// functions
+void insert_instruction(vector<type_instruction> &instructions_list, galetype type, int register_source_a, int register_source_b, int register_target, int immediate){
+	// printf("%4d: \ttype: %d \tsource_a: %d \tsource_b: %d \ttarget: %d\n",
+	// line_counter, type, register_source_a, register_source_b, register_target);
+
+	type_instruction *new_instruction = new type_instruction;
+
+	new_instruction->line = line;
+	new_instruction->register_a = register_source_a;
+	new_instruction->register_b = register_source_b;
+	new_instruction->register_c = register_target;
+	new_instruction->immediate = 0;
+	new_instruction->type = type;
+
+	instructions_list.push_back(*new_instruction);
+	line++;
+
+}
 
 galetype translate_instruction_name(string instruction_name){
 	galetype instruction_type;
@@ -101,23 +99,61 @@ galetype translate_instruction_name(string instruction_name){
 	return instruction_type;
 }
 
+void print_help(){
+
+}
+
 
 int main(int argc, char const *argv[]) {
-	int line;
-	line = 0;
-	std::vector<type_instruction> instructions_list;
-	instructions_list.clear();
+	int register_a;
+	int register_b;
+	int register_c;
+	int immediate;
 	galetype instruction_type;
 	string instruction_name;
+	std::vector<type_instruction> instructions_list;
 
+	// initialize variables
+	instructions_list.clear();
+	line = 0;
 
 	while (1) {
+		// initialize variables
+		register_a = 0;
+		register_b = 0;
+		register_c = 0;
+		immediate = 0;
+
+		// enter and adequate instruction type
 		cin >> instruction_name;
 		instruction_type = translate_instruction_name(instruction_name);
 
 		if (instruction_type==eof) {
 			break;
 		}
+		switch (instruction_type) {
+			case help:
+				print_help();
+				break;
+			case error:
+				cout << "Invalid instruction type. Try again!" << endl;
+				break;
+			case add:
+			case sub:
+			case times:
+			case over:
+			case andg:
+			case org:
+			case setlt:
+				cout << "Enter the first operator register: ";
+				cin >> register_a;
+				cout << "Enter the second operator register: ";
+				cin >> register_b;
+				cout << "Enter the result register: ";
+				cin >> register_c;
+				break;
+		}
+		insert_instruction(instructions_list, instruction_type, register_a, register_b, register_c, immediate);
 	}
 
 
