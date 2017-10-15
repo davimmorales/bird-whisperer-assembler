@@ -17,7 +17,7 @@ void insert_instruction(vector<type_instruction> &instructions_list, galetype ty
 	new_instruction->register_a = register_source_a;
 	new_instruction->register_b = register_source_b;
 	new_instruction->register_c = register_target;
-	new_instruction->immediate = 0;
+	new_instruction->immediate = immediate;
 	new_instruction->type = type;
 
 	instructions_list.push_back(*new_instruction);
@@ -89,18 +89,10 @@ galetype translate_instruction_name(string instruction_name){
 		instruction_type = storer;
 	}else if(instruction_name.compare("jumpr")==0){
 		instruction_type = jumpr;
-	}else if(instruction_name.compare("exit")==0){
-		instruction_type = eof;
-	}else if(instruction_name.compare("help")==0){
-		instruction_type = help;
 	}else{
 		instruction_type = error;
 	}
 	return instruction_type;
-}
-
-void print_help(){
-
 }
 
 
@@ -109,53 +101,63 @@ int main(int argc, char const *argv[]) {
 	int register_b;
 	int register_c;
 	int immediate;
+	string content;
 	galetype instruction_type;
 	string instruction_name;
+	string file_name;
 	std::vector<type_instruction> instructions_list;
+	int content_specifier;
 
-	// initialize variables
-	instructions_list.clear();
-	line = 0;
+	// cout << "Enter the name of the entry file: ";
+	// cin >> file_name;
+	file_name = "entry.txt";
 
-	while (1) {
+	ifstream entry_file(file_name);
+  if (entry_file.is_open()){
 		// initialize variables
-		register_a = 0;
-		register_b = 0;
-		register_c = 0;
-		immediate = 0;
+		instructions_list.clear();
+		line = 0;
+		while (getline(entry_file, content)) {
+			std::stringstream ss(content);
+			content_specifier = 0;
 
-		// enter and adequate instruction type
-		cin >> instruction_name;
-		instruction_type = translate_instruction_name(instruction_name);
-
-		if (instruction_type==eof) {
-			break;
+			// initialize variables
+			register_a = 0;
+			register_b = 0;
+			register_c = 0;
+			immediate = 0;
+			while (getline(ss, content, ' ')) {
+				switch (content_specifier) {
+					case 0:
+						instruction_name = content;
+						instruction_type = translate_instruction_name(instruction_name);
+						content_specifier++;
+						break;
+					case 1:
+						register_a = stoi(content);
+						content_specifier++;
+						break;
+					case 2:
+						register_b = stoi(content);
+						content_specifier++;
+						break;
+					case 3:
+						register_c = stoi(content);
+						content_specifier++;
+						break;
+					case 4:
+						immediate = stoi(content);
+						content_specifier++;
+						break;
+				}
+			}
+			insert_instruction(instructions_list, instruction_type, register_a, register_b, register_c, immediate);
 		}
-		switch (instruction_type) {
-			case help:
-				print_help();
-				break;
-			case error:
-				cout << "Invalid instruction type. Try again!" << endl;
-				break;
-			case add:
-			case sub:
-			case times:
-			case over:
-			case andg:
-			case org:
-			case setlt:
-				cout << "Enter the first operator register: ";
-				cin >> register_a;
-				cout << "Enter the second operator register: ";
-				cin >> register_b;
-				cout << "Enter the result register: ";
-				cin >> register_c;
-				break;
-		}
-		insert_instruction(instructions_list, instruction_type, register_a, register_b, register_c, immediate);
-	}
+    entry_file.close();
+  }
+  else cout << "Unable to open file";
 
+	print_target_code(instructions_list);
 
   return 0;
 }

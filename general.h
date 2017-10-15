@@ -7,6 +7,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
+#include <sstream>
+
 
 typedef enum{
     /*0 Adição  000000 &*/ add, // R[DR] <- R[SA] + R[SB]
@@ -41,8 +44,6 @@ typedef enum{
   /*29 Store Registrador 100010*/ storer, // M[R[SA]] -> R[DR]
   /*30 Jump Registrador  100011 &*/ jumpr, // PC <- R[SA]
 // control types:
-  eof,
-  help,
   error
 
 }galetype;
@@ -57,9 +58,10 @@ typedef struct type_instruction{
   struct type_instruction *next;
 }type_instruction;
 
+void print_target_code(std::vector<type_instruction> &instructions_list);
+
 char *decimal_to_binary(int decimal, int lenght);
 
-// void print_target_code(list_instructions *instructions_list);
 
 
 #endif
