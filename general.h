@@ -40,9 +40,14 @@ typedef enum{
   /*25 HLT  011100 &*/ halt, // Parar Operação
   /*26 Pré Saída  011110 &*/ poutput, // Displays <- R[SA]
   /*27 Saída  100000 &*/ output, // Displays <- R[SA]
-  /*28 Load Registrador 1000001*/ loadr, // R[DR] <- M[R[SA]]
-  /*29 Store Registrador 100010*/ storer, // M[R[SA]] -> R[DR]
+  /*28 Load Registrador 1000001*/ loadr, // R[DR] -> M[R[SA]]
+  /*29 Store Registrador 100010*/ storer, // M[R[SA]] <- R[DR]
   /*30 Jump Registrador  100011 &*/ jumpr, // PC <- R[SA]
+  /* 31 load immediate to HD 011010*/loadi_hd, //R[DR] <- IM1, IM2
+  /*32 Store Register in HD */ store_hd,//HD[R[SA, IM]] <- R[DR]
+  /* 33 Load HD to Register*/ load_hd,//HD[R[SA, IM]] -> R[DR]
+  /*29 Store iRAM 100110*/ store_i_ram, // M[R[SA]] <- R[DR]
+
 // control types:
   error
 

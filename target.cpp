@@ -47,7 +47,7 @@ void print_target_code(vector<type_instruction> &instructions_list){
   fprintf(file_target_code, "\t \t if (firstClock==0) begin\n \n");
 
   for(instruction = instructions_list.begin(); instruction != instructions_list.end(); instruction++){
-    fprintf(file_target_code, "\t \t instructionsRAM[%d] = 32'b", instruction->line);
+    fprintf(file_target_code, "\t \t instructionsRAM[%d] <= 32'b", instruction->line);
     switch (instruction->type) {
       case add:
         fprintf(file_target_code, "000000%s%s%s00000000000;//ADD r[%d],r[%d] to r[%d]\n",
@@ -181,6 +181,13 @@ void print_target_code(vector<type_instruction> &instructions_list){
         decimal_to_binary(instruction->immediate, 21),
         instruction->immediate, instruction->register_a);
       break;
+      case loadi_hd:
+        fprintf(file_target_code, "011010%s%s%s;//Loadi #%d, #%d to r[%d]\n",
+        decimal_to_binary(instruction->register_a, 5),
+        decimal_to_binary(instruction->register_b, 7),
+        decimal_to_binary(instruction->immediate, 14),
+        instruction->immediate, instruction->register_b, instruction->register_a);
+      break;
       case input:
         fprintf(file_target_code, "011101%s%s;//Input to r[%d]\n",
         decimal_to_binary(instruction->register_a, 5),
@@ -210,7 +217,28 @@ void print_target_code(vector<type_instruction> &instructions_list){
         instruction->register_a, instruction->register_c);
       break;
       case storer:
-        fprintf(file_target_code, "100010%s%s%s;//rStore to r[%d] in m[r[%d]] \n",
+        fprintf(file_target_code, "100010%s%s%s;//rStore r[%d] in m[r[%d]] \n",
+        decimal_to_binary(instruction->register_c, 5),
+        decimal_to_binary(instruction->register_a, 5),
+        decimal_to_binary(instruction->immediate, 16),
+        instruction->register_c, instruction->register_a);
+      break;
+      case store_hd:
+        fprintf(file_target_code, "100100%s%s%s;//hdStore r[%d] in m[r[%d]] \n",
+        decimal_to_binary(instruction->register_c, 5),
+        decimal_to_binary(instruction->register_a, 5),
+        decimal_to_binary(instruction->immediate, 16),
+        instruction->register_c, instruction->register_a);
+      break;
+      case load_hd:
+        fprintf(file_target_code, "100101%s%s%s;//LoadHD m[r[%d]] to r[%d]\n",
+        decimal_to_binary(instruction->register_c, 5),
+        decimal_to_binary(instruction->register_a, 5),
+        decimal_to_binary(instruction->immediate, 16),
+        instruction->register_a, instruction->register_c);
+      break;
+      case store_i_ram:
+        fprintf(file_target_code, "100110%s%s%s;//rStore r[%d] in m[r[%d]] \n",
         decimal_to_binary(instruction->register_c, 5),
         decimal_to_binary(instruction->register_a, 5),
         decimal_to_binary(instruction->immediate, 16),

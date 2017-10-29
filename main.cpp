@@ -89,6 +89,14 @@ galetype translate_instruction_name(string instruction_name){
 		instruction_type = storer;
 	}else if(instruction_name.compare("jumpr")==0){
 		instruction_type = jumpr;
+	}else if(instruction_name.compare("loadi_hd")==0){
+			instruction_type = loadi_hd;
+	}else if(instruction_name.compare("store_hd")==0){
+			instruction_type = store_hd;
+	}else if(instruction_name.compare("load_hd")==0){
+			instruction_type = load_hd;
+	}else if(instruction_name.compare("store_i_ram")==0){
+			instruction_type = store_i_ram;
 	}else{
 		instruction_type = error;
 	}
