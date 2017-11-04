@@ -97,6 +97,9 @@ galetype translate_instruction_name(string instruction_name){
 			instruction_type = load_hd;
 	}else if(instruction_name.compare("store_i_ram")==0){
 			instruction_type = store_i_ram;
+	}
+	else if(instruction_name.compare("start_system")==0){
+		instruction_type = start_system;
 	}else{
 		instruction_type = error;
 	}
