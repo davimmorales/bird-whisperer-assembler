@@ -7,7 +7,7 @@ module simpleInstructionsRam(clock, address, iRAMOutput);
 
 	 always @ ( posedge clock ) begin
 	 	 if (firstClock==0) begin
- 
+ asd
 	 	 bios[0] <= 32'b01101100000000000000000000000000;//Nop
 	 	 bios[1] <= 32'b01110110101000000000000000000000;//Input to r[21]
 	 	 bios[2] <= 32'b01101010110000000000000000000000;//Loadi #0 to r[22]
