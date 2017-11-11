@@ -66,6 +66,9 @@ load_hd
 store_i_ram
   memory[source_a] = target
 
+For maps
+[] line
+() variable
 
 
 
