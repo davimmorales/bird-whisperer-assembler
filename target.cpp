@@ -47,7 +47,7 @@ void print_target_code(vector<type_instruction> &instructions_list){
   fprintf(file_target_code, "\t \t if (firstClock==0) begin\n \n");
 
   for(instruction = instructions_list.begin(); instruction != instructions_list.end(); instruction++){
-    fprintf(file_target_code, "\t \t bios[%d] <= 32'b", instruction->line);
+    fprintf(file_target_code, "\t \t instructionsRAM[%d] <= 32'b", instruction->line);//+256);
     switch (instruction->type) {
       case add:
         fprintf(file_target_code, "000000%s%s%s00000000000;//ADD r[%d],r[%d] to r[%d]\n",
@@ -156,6 +156,9 @@ void print_target_code(vector<type_instruction> &instructions_list){
       case noo:
         fprintf(file_target_code, "01101100000000000000000000000000;//Nop\n");
       break;
+      case preio:
+        fprintf(file_target_code, "01111000000000000000000000000000;//Nop\n");
+      break;
       case start_system:
         fprintf(file_target_code, "10011100000000000000000000000000;//Nop\n");
       break;
@@ -200,12 +203,12 @@ void print_target_code(vector<type_instruction> &instructions_list){
       case halt:
         fprintf(file_target_code, "01110000000000000000000000000000;//Hlt\n");
       break;
-      case poutput:
-        fprintf(file_target_code, "011110%s%s;//Pre Output r[%d]\n",
-        decimal_to_binary(instruction->register_a, 5),
-        decimal_to_binary(instruction->immediate, 21),
-        instruction->register_a);
-      break;
+      // case poutput:
+      //   fprintf(file_target_code, "011110%s%s;//Pre Output r[%d]\n",
+      //   decimal_to_binary(instruction->register_a, 5),
+      //   decimal_to_binary(instruction->immediate, 21),
+      //   instruction->register_a);
+      // break;
       case output:
         fprintf(file_target_code, "100000%s%s;//Output r[%d]\n",
         decimal_to_binary(instruction->register_a, 5),

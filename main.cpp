@@ -79,8 +79,8 @@ galetype translate_instruction_name(string instruction_name){
 		instruction_type = input;
 	}else if(instruction_name.compare("halt")==0){
 		instruction_type = halt;
-	}else if(instruction_name.compare("poutput")==0){
-		instruction_type = poutput;
+	}else if(instruction_name.compare("preio")==0){
+		instruction_type = preio;
 	}else if(instruction_name.compare("output")==0){
 		instruction_type = output;
 	}else if(instruction_name.compare("loadr")==0){

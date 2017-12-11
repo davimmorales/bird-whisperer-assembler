@@ -38,7 +38,7 @@ typedef enum{
   /*23 Nop  011011 &*/ noo, // Sem Operação
   /*24 Entrada  011101 &*/ input, // R[DR] <- alavancas
   /*25 HLT  011100 &*/ halt, // Parar Operação
-  /*26 Pré Saída  011110 &*/ poutput, // Displays <- R[SA]
+  /*26 Pré Saída  011110 &*/ preio, // Displays <- R[SA]
   /*27 Saída  100000 &*/ output, // Displays <- R[SA]
   /*28 Load Registrador 1000001*/ loadr, // R[DR] -> M[R[SA]]
   /*29 Store Registrador 100010*/ storer, // M[R[SA]] <- R[DR]
