@@ -36,18 +36,10 @@ void print_target_code(vector<type_instruction> &instructions_list){
   file_target_code = fopen("simpleInstructionsRam.v", "w");
   vector<type_instruction>::iterator instruction;
 
-  fprintf(file_target_code, "module simpleInstructionsRam(clock, address, iRAMOutput);\n");
-  fprintf(file_target_code, "\t input [9:0] address;\n");
-  fprintf(file_target_code, "\t input clock;\n");
-  fprintf(file_target_code, "\t output [31:0] iRAMOutput;\n");
-  fprintf(file_target_code, "\t integer firstClock = 0;\n");
-  fprintf(file_target_code, "\t reg [31:0] instructionsRAM[%d:0];\n", instructions_list.size());
-  fprintf(file_target_code, "\n");
-  fprintf(file_target_code, "\t always @ ( posedge clock ) begin\n");
-  fprintf(file_target_code, "\t \t if (firstClock==0) begin\n \n");
+
 
   for(instruction = instructions_list.begin(); instruction != instructions_list.end(); instruction++){
-    fprintf(file_target_code, "\t \t instructionsRAM[%d] <= 32'b", instruction->line);//+256);
+    fprintf(file_target_code, "\t \t HD[%d] = 32'b", instruction->line);//for HD sectors: 2048
     switch (instruction->type) {
       case add:
         fprintf(file_target_code, "000000%s%s%s00000000000;//ADD r[%d],r[%d] to r[%d]\n",
@@ -160,7 +152,7 @@ void print_target_code(vector<type_instruction> &instructions_list){
         fprintf(file_target_code, "01111000000000000000000000000000;//Nop\n");
       break;
       case start_system:
-        fprintf(file_target_code, "10011100000000000000000000000000;//Nop\n");
+        fprintf(file_target_code, "10011100000000000000000000000000;//Start System\n");
       break;
       case setlt:
         fprintf(file_target_code, "010111%s%s%s00000000000;//SLT if r[%d] < r[%d], r[%d] = 1 else r[%d] = 0\n",
@@ -190,8 +182,8 @@ void print_target_code(vector<type_instruction> &instructions_list){
       case loadi_hd:
         fprintf(file_target_code, "011010%s%s%s;//Loadi #%d, #%d to r[%d]\n",
         decimal_to_binary(instruction->register_a, 5),
-        decimal_to_binary(instruction->register_b, 7),
-        decimal_to_binary(instruction->immediate, 14),
+        decimal_to_binary(instruction->register_b, 10),
+        decimal_to_binary(instruction->immediate, 11),
         instruction->register_b, instruction->immediate,  instruction->register_a);
       break;
       case input:
@@ -256,11 +248,7 @@ void print_target_code(vector<type_instruction> &instructions_list){
     }
   }
 
-  fprintf(file_target_code, "\n\t \t firstClock <= 0;\n");
-  fprintf(file_target_code, "\t \t end\n");
-  fprintf(file_target_code, "\t end\n\n");
-  fprintf(file_target_code, "\t assign iRAMOutput = instructionsRAM[address];\n");
-  fprintf(file_target_code, "endmodule // simpleInstructionsRAM\n");
+
 
   fclose( file_target_code );
 }
