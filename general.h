@@ -48,6 +48,7 @@ typedef enum{
   /* 33 Load HD to Register*/ load_hd,//HD[R[SA, IM]] -> R[DR]
   /*29 Store iRAM 100110*/ store_i_ram, // M[R[SA]] <- R[DR]
   start_system,
+  load_wd,//loads watchdog content to register
 
 // control types:
   error
