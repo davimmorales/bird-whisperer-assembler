@@ -243,7 +243,7 @@ void print_target_code(vector<type_instruction> &instructions_list){
         instruction->register_c, instruction->register_a);
       break;
       case load_wd:
-        fprintf(file_target_code, "100111%s000000000000000000000;//Load wd to r[%d]\n",
+        fprintf(file_target_code, "101000%s000000000000000000000;//Load wd to r[%d]\n",
         decimal_to_binary(instruction->register_a, 5),
         instruction->register_a);
       break;
@@ -252,8 +252,5 @@ void print_target_code(vector<type_instruction> &instructions_list){
       break;
     }
   }
-
-
-
   fclose( file_target_code );
 }
