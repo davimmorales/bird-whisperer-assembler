@@ -39,7 +39,7 @@ void print_target_code(vector<type_instruction> &instructions_list){
 
 
   for(instruction = instructions_list.begin(); instruction != instructions_list.end(); instruction++){
-    fprintf(file_target_code, "\t \t HD[%d] = 32'b", instruction->line);//for HD sectors: 2048
+    fprintf(file_target_code, "\t \t HD[%d] = 32'b", instruction->line);//+4096+3*192);//for HD sectors: 2048
     switch (instruction->type) {
       case add:
         fprintf(file_target_code, "000000%s%s%s00000000000;//ADD r[%d],r[%d] to r[%d]\n",
@@ -116,7 +116,11 @@ void print_target_code(vector<type_instruction> &instructions_list){
         instruction->register_a, instruction->register_c);
       break;
       case shiftl:
-        fprintf(file_target_code, "forgot %d\n", instruction->type);
+        fprintf(file_target_code, "010000%s%s%s;//shiftl r[%d] by #%d bits to r[%d]\n",
+        decimal_to_binary(instruction->register_c, 5),
+        decimal_to_binary(instruction->register_a, 5),
+        decimal_to_binary(instruction->immediate, 16),
+      instruction->register_a, instruction->immediate, instruction->register_c);
       break;
       case shiftr:
         fprintf(file_target_code, "forgot %d\n", instruction->type);
@@ -132,7 +136,9 @@ void print_target_code(vector<type_instruction> &instructions_list){
         instruction->immediate);
       break;
       case branchn:
-        fprintf(file_target_code, "forgot %d\n", instruction->type);
+        fprintf(file_target_code, "010100%s;//Branch on Negative #%d\n",
+        decimal_to_binary(instruction->immediate, 26),
+        instruction->immediate);
       break;
       case jump:
         fprintf(file_target_code, "010101%s;//Jump to #%d\n",
@@ -149,7 +155,7 @@ void print_target_code(vector<type_instruction> &instructions_list){
         fprintf(file_target_code, "01101100000000000000000000000000;//Nop\n");
       break;
       case preio:
-        fprintf(file_target_code, "01111000000000000000000000000000;//Nop\n");
+        fprintf(file_target_code, "01111000000000000000000000000000;//preio\n");
       break;
       case start_system:
         fprintf(file_target_code, "10011100000000000000000000000000;//Start System\n");
