@@ -253,6 +253,16 @@ void print_target_code(vector<type_instruction> &instructions_list){
         decimal_to_binary(instruction->register_a, 5),
         instruction->register_a);
       break;
+      case load_ino:
+        fprintf(file_target_code, "101010%s000000000000000000000;//Load arduino to r[%d]\n",
+        decimal_to_binary(instruction->register_a, 5),
+        instruction->register_a);
+      break;
+      case store_ino:
+        fprintf(file_target_code, "101001%s000000000000000000000;//Store r[%d] to arduino\n",
+        decimal_to_binary(instruction->register_a, 5),
+        instruction->register_a);
+      break;
       default:
         printf("Galetype Unknown: %d\n", instruction->type);
       break;

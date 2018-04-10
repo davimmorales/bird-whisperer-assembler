@@ -49,7 +49,8 @@ typedef enum{
   /*29 Store iRAM 100110*/ store_i_ram, // M[R[SA]] <- R[DR]
   start_system,
   load_wd,//loads watchdog content to register
-
+  load_ino,
+  store_ino,
 // control types:
   error
 
